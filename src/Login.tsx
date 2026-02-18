@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 
 export default function Login() {
@@ -29,8 +27,9 @@ export default function Login() {
       const data = await res.json();
       alert(data.message);
 
-      // Login success → Netflix page
+      // ✅ IMPORTANT — save login session
       if (data.message === "Login success") {
+        localStorage.setItem("user", email);
         window.location.href = "/netflix";
       }
     } catch (err) {
@@ -64,7 +63,6 @@ export default function Login() {
           {isSignup ? "Create Account" : "Welcome Back"}
         </h2>
 
-        {/* Signup fields */}
         {isSignup && (
           <>
             <input
@@ -83,7 +81,6 @@ export default function Login() {
           </>
         )}
 
-        {/* Common fields */}
         <input
           placeholder="Email"
           value={email}
@@ -99,12 +96,10 @@ export default function Login() {
           style={inputStyle}
         />
 
-        {/* Submit button */}
         <button onClick={handleSubmit} style={buttonStyle}>
           {isSignup ? "Sign Up" : "Login"}
         </button>
 
-        {/* Toggle login/signup */}
         <p
           onClick={() => setIsSignup(!isSignup)}
           style={{
@@ -123,8 +118,6 @@ export default function Login() {
     </div>
   );
 }
-
-/* ---------- styles ---------- */
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -147,4 +140,3 @@ const buttonStyle: React.CSSProperties = {
   fontSize: "15px",
   cursor: "pointer",
 };
-g
