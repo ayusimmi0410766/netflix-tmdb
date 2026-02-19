@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -10,7 +13,6 @@ export default function Login() {
   const handleSubmit = async () => {
     try {
       const BASE = "https://netflix-backend-w20o.onrender.com";
-
       const url = isSignup ? `${BASE}/signup` : `${BASE}/login`;
 
       const body = isSignup
@@ -26,10 +28,10 @@ export default function Login() {
       const data = await res.json();
       alert(data.message);
 
-      // ✅ SUCCESS LOGIN
+      // ✅ successful login → redirect
       if (res.ok && !isSignup) {
         localStorage.setItem("user", email);
-        window.location.href = "/netflix";
+        navigate("/netflix");
       }
     } catch (err) {
       alert("Server error. Please try again.");
