@@ -2,7 +2,6 @@ import { useState } from "react";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -27,8 +26,8 @@ export default function Login() {
       const data = await res.json();
       alert(data.message);
 
-      // ✅ IMPORTANT — save login session
-      if (data.message === "Login success") {
+      // ✅ SUCCESS LOGIN
+      if (res.ok && !isSignup) {
         localStorage.setItem("user", email);
         window.location.href = "/netflix";
       }
@@ -39,26 +38,8 @@ export default function Login() {
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #141E30 0%, #243B55 100%)",
-      }}
-    >
-      <div
-        style={{
-          width: 360,
-          padding: 32,
-          borderRadius: 16,
-          background: "rgba(255,255,255,0.12)",
-          backdropFilter: "blur(12px)",
-          boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
-          color: "white",
-        }}
-      >
+    <div style={container}>
+      <div style={card}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           {isSignup ? "Create Account" : "Welcome Back"}
         </h2>
@@ -69,14 +50,13 @@ export default function Login() {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              style={inputStyle}
+              style={input}
             />
-
             <input
               placeholder="Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              style={inputStyle}
+              style={input}
             />
           </>
         )}
@@ -85,7 +65,7 @@ export default function Login() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={inputStyle}
+          style={input}
         />
 
         <input
@@ -93,23 +73,14 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={inputStyle}
+          style={input}
         />
 
-        <button onClick={handleSubmit} style={buttonStyle}>
+        <button onClick={handleSubmit} style={button}>
           {isSignup ? "Sign Up" : "Login"}
         </button>
 
-        <p
-          onClick={() => setIsSignup(!isSignup)}
-          style={{
-            marginTop: 16,
-            textAlign: "center",
-            cursor: "pointer",
-            color: "#00c6ff",
-            fontSize: 14,
-          }}
-        >
+        <p onClick={() => setIsSignup(!isSignup)} style={toggle}>
           {isSignup
             ? "Already have an account? Login"
             : "New here? Create account"}
@@ -119,24 +90,47 @@ export default function Login() {
   );
 }
 
-const inputStyle: React.CSSProperties = {
+const container: React.CSSProperties = {
+  height: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "linear-gradient(135deg, #141E30, #243B55)",
+};
+
+const card: React.CSSProperties = {
+  width: 360,
+  padding: 32,
+  borderRadius: 16,
+  background: "rgba(255,255,255,0.12)",
+  backdropFilter: "blur(12px)",
+  boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+  color: "white",
+};
+
+const input: React.CSSProperties = {
   width: "100%",
-  padding: "10px 12px",
+  padding: "10px",
   marginBottom: "12px",
   borderRadius: "8px",
   border: "none",
   outline: "none",
-  fontSize: "14px",
 };
 
-const buttonStyle: React.CSSProperties = {
+const button: React.CSSProperties = {
   width: "100%",
   padding: "10px",
   borderRadius: "8px",
   border: "none",
-  backgroundImage: "linear-gradient(45deg, #ff416c, #ff4b2b)",
+  background: "linear-gradient(45deg, #ff416c, #ff4b2b)",
   color: "white",
   fontWeight: "bold",
-  fontSize: "15px",
   cursor: "pointer",
+};
+
+const toggle: React.CSSProperties = {
+  marginTop: 16,
+  textAlign: "center",
+  cursor: "pointer",
+  color: "#00c6ff",
 };

@@ -2,21 +2,22 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Netflix from "./Netflix";
 
-export default function App() {
-  const isLoggedIn = localStorage.getItem("user");
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const user = localStorage.getItem("user");
+  return user ? children : <Navigate to="/" />;
+}
 
+export default function App() {
   return (
     <Routes>
-      {/* Default route */}
-      <Route
-        path="/"
-        element={isLoggedIn ? <Navigate to="/netflix" /> : <Login />}
-      />
-
-      {/* Protected route */}
+      <Route path="/" element={<Login />} />
       <Route
         path="/netflix"
-        element={isLoggedIn ? <Netflix /> : <Navigate to="/" />}
+        element={
+          <ProtectedRoute>
+            <Netflix />
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );
